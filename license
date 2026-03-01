@@ -1,0 +1,8 @@
+This codebase represents a portfolio demonstration.
+Some parts of the implementation have been intentionally omitted,
+including production scrapers, pipeline logic, automation workflows,
+and deployment configuration.
+
+Commercial use, redistribution, or deployment of this codebase—
+in full or in part—is strictly prohibited without explicit written
+permission from the author.
