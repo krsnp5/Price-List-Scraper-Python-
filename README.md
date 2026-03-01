@@ -1,64 +1,114 @@
-# Shoe Price Tracker Infra (Python + FastAPI)
+# 🥿 Shoe Price Tracker — Python + FastAPI + Make.com Orchestrated
 
-A small, production-style Python infrastructure for tracking shoe prices across multiple online stores.
+A clean, production-style **Python microservice** for tracking shoe prices across multiple stores.  
+This project showcases:
 
-This project is structured as a real-world service, not just a one-off script: it has scrapers, a normalization layer, a database, and an HTTP API that can be orchestrated by tools like Make.com, cron, or any workflow engine.
+- modular scraper design  
+- data normalization  
+- persistence  
+- API-first architecture  
+- workflow automation with **Make.com**  
+- and deployment-ready FastAPI service  
 
----
-
-## Features
-
-- 🧩 **Modular scraper design** – base scraper class + per-store implementations.
-- 🧼 **Normalized data model** – unified `ShoeProduct` representation across stores.
-- 💾 **Persistent storage** – SQLite database for price history.
-- 🌐 **FastAPI service** – `/products` and `/products/{sku}` read endpoints.
-- 🤖 **Automation-ready** – `/run-scraper` endpoint designed for Make.com or cron.
-- 🧪 **Demo-friendly** – example scraper parses a local HTML file (no live scraping required).
+It’s built to demonstrate modern backend engineering and automation in a compact, portfolio-friendly form.
 
 ---
 
-## Architecture
+# ✨ Features
 
-**Components:**
+- 🧩 **Modular Scraper Layer**  
+  Abstract `BaseScraper` + plug-in scrapers per domain (demo scraper included)
 
-- `src/scrapers/` – Scraper implementations
-  - `BaseScraper` – abstract interface
-  - `DemoStoreScraper` – parses `data/demo_store_sample.html`
-- `src/models.py` – `ShoeProduct` dataclass used across the pipeline.
-- `src/db.py` – SQLite initialization and insert helpers.
-- `src/pipeline.py` – Orchestrates all scrapers and writes to DB.
-- `src/api.py` – FastAPI app exposing:
-  - `GET /ping`
-  - `POST /run-scraper`
-  - `GET /products`
-  - `GET /products/{sku}`
+- 🧼 **Normalized Data Model**  
+  Unified `ShoeProduct` object across all stores
 
-All data is stored in `shoe_prices.db` at the project root.
+- 💾 **SQLite Persistent Storage**  
+  Tracks price history across runs
 
----
+- 🌐 **FastAPI Service**  
+  Endpoints for triggering scrapes and reading stored pricing data
 
-## Tech Stack
+- 🤖 **Make.com Automation**  
+  Scheduler → POST → `/run-scraper` → logs / notifications
 
-- **Python 3.10+**
-- **FastAPI** – API layer
-- **Uvicorn** – ASGI server
-- **SQLite** – simple, file-based storage
-- **BeautifulSoup4** – HTML parsing
+- 🧪 **Safe by Default**  
+  Includes a sample HTML file (`demo_store_sample.html`) so you can demo without scraping live sites
+
+- 🚀 **Deployable**  
+  Free-tier friendly: Render, Railway, Koyeb, or any Linux VPS
 
 ---
 
-## Project Structure
+# 🏗️ Architecture
+
+          ┌────────────────────────┐
+          │       Make.com         │
+          │  (Scheduler + Logging) │
+          └──────────┬─────────────┘
+                     │ POST /run-scraper
+                     ▼
+            ┌───────────────────┐
+            │     FastAPI       │
+            │   (src/api.py)    │
+            └───────┬──────────┘
+                    │
+                    ▼
+       ┌────────────────────────────┐
+       │       Pipeline Logic       │
+       │    (src/pipeline.py)       │
+       └───────┬────────┬──────────┘
+               │        │
+               ▼        ▼
+   ┌────────────────┐   ┌──────────────────┐
+   │ Demo Scraper    │   │ Future Scrapers  │
+   │ (local HTML)    │   │ (HTTP/requests)  │
+   └─────────┬──────┘   └────────┬─────────┘
+             │                   │
+             ▼                   ▼
+       ┌──────────────────────────────────┐
+       │          SQLite Database          │
+       │         (shoe_prices.db)          │
+       └──────────────────────────────────┘
+
+
+---
+
+# 🧰 Tech Stack
+
+### **Backend**
+- Python 3.10+
+- FastAPI
+- Uvicorn
+- BeautifulSoup4
+- SQLite (file-based DB)
+- Dataclasses
+
+### **Automation & Orchestration**
+- **Make.com**  
+  - Scheduling  
+  - Webhooks (HTTP triggers)  
+  - Logging (Google Sheets / Airtable)  
+  - Alerts (Slack / Telegram / Email)
+
+### **Deployment (Optional)**
+- Render (Free Tier)
+- Railway
+- Koyeb
+- Fly.io
+- Any VPS running Linux
+
+---
+
+# 📁 Project Structure
 
 ```text
 shoe-price-tracker/
 ├─ src/
-│  ├─ __init__.py
 │  ├─ models.py
 │  ├─ db.py
 │  ├─ pipeline.py
 │  ├─ api.py
 │  └─ scrapers/
-│     ├─ __init__.py
 │     ├─ base.py
 │     └─ demo_store.py
 ├─ data/
