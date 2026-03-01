@@ -41,35 +41,7 @@ It’s built to demonstrate modern backend engineering and automation in a compa
 
 # 🏗️ Architecture
 
-          ┌────────────────────────┐
-          │       Make.com         │
-          │  (Scheduler + Logging) │
-          └──────────┬─────────────┘
-                     │ POST /run-scraper
-                     ▼
-            ┌───────────────────┐
-            │     FastAPI       │
-            │   (src/api.py)    │
-            └───────┬──────────┘
-                    │
-                    ▼
-       ┌────────────────────────────┐
-       │       Pipeline Logic       │
-       │    (src/pipeline.py)       │
-       └───────┬────────┬──────────┘
-               │        │
-               ▼        ▼
-   ┌────────────────┐   ┌──────────────────┐
-   │ Demo Scraper    │   │ Future Scrapers  │
-   │ (local HTML)    │   │ (HTTP/requests)  │
-   └─────────┬──────┘   └────────┬─────────┘
-             │                   │
-             ▼                   ▼
-       ┌──────────────────────────────────┐
-       │          SQLite Database          │
-       │         (shoe_prices.db)          │
-       └──────────────────────────────────┘
-
+[See separate file]
 
 ---
 
